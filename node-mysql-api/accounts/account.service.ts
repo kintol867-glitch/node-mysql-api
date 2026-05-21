@@ -91,6 +91,7 @@ async function register(params: any, origin: any) {
 
   await account.save();
 
+  console.log("VERIFY TOKEN for", account.email, ":", account.verificationToken);
   await sendVerificationEmail(account, origin);
 }
 
