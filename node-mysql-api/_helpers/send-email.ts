@@ -8,10 +8,15 @@ export default async function sendEmail({
   from = config.emailFrom,
 }: any) {
   try {
-    const transporter = nodemailer.createTransport(config.smtpOptions as any);
-    const info = await transporter.sendMail({ from, to, subject, html });
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    } as any);
+    const info = await transporter.sendMail({ from: process.env.SMTP_USER, to, subject, html });
     console.log("Email sent to:", to, "Message ID:", info.messageId);
-    console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
   } catch (err: any) {
     console.error("EMAIL ERROR:", err.message);
   }
