@@ -7,7 +7,12 @@ export default async function sendEmail({
   html,
   from = config.emailFrom,
 }: any) {
-  const transporter = nodemailer.createTransport(config.smtpOptions as any);
-  const info = await transporter.sendMail({ from, to, subject, html });
-  console.log("Email sent to:", to, "Message ID:", info.messageId, "Preview:", nodemailer.getTestMessageUrl(info));
+  try {
+    const transporter = nodemailer.createTransport(config.smtpOptions as any);
+    const info = await transporter.sendMail({ from, to, subject, html });
+    console.log("Email sent to:", to, "Message ID:", info.messageId);
+    console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
+  } catch (err: any) {
+    console.error("EMAIL ERROR:", err.message);
+  }
 }
