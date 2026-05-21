@@ -7,19 +7,18 @@ export default async function sendEmail({
 }: any) {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      host: process.env.MAILTRAP_HOST,
+      port: Number(process.env.MAILTRAP_PORT),
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: process.env.MAILTRAP_USER,
+        pass: process.env.MAILTRAP_PASS,
       },
     } as any);
-    const info = await transporter.sendMail({ 
-      from: process.env.SMTP_USER, 
-      to, 
-      subject, 
-      html 
+    const info = await transporter.sendMail({
+      from: "noreply@auth-app.com",
+      to,
+      subject,
+      html,
     });
     console.log("Email sent to:", to, "Message ID:", info.messageId);
   } catch (err: any) {
